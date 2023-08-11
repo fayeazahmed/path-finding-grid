@@ -50,7 +50,7 @@ class PriorityQueue {
 
             if (parentIndex < 0) continue;
             const parentNode = this.data[parentIndex];
-            if (childNode.distance < parentNode.distance) {
+            if ((childNode.distance + childNode.vertex.h) < (parentNode.distance + parentNode.vertex.h)) {
                 this.data[parentIndex] = childNode;
                 this.data[i] = parentNode;
             }
@@ -77,6 +77,11 @@ class PriorityQueue {
 
     empty() {
         return this.data.length === 0
+    }
+
+    clear() {
+        this.data.length = 0;
+        this.size = 0
     }
 
 }

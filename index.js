@@ -1,3 +1,2 @@
 init();
-const distances = findDijkstra()
-drawPath(distances)
+findDijkstra().then(distances => drawPath(distances))
