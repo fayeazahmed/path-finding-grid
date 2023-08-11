@@ -2,12 +2,11 @@ const LENGTH = 500
 const N = 50
 const L = LENGTH / N
 const W = 1
-const goalY = LENGTH - L * 20
-const goalX = LENGTH - L * 10
+const goalY = LENGTH - L
+const goalX = LENGTH - L
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d");
 const vertices = []
-
 canvas.height = LENGTH
 canvas.width = LENGTH
 ctx.fillStyle = "#d3d3d3";
@@ -18,7 +17,7 @@ function init() {
         vertices.push([]);
         for (let x = 0; x < N; x++) {
             vertices[y][x] =
-                (x === 0 && y === 0) || (x === N - 1 && y === N - 1)
+                (x === 0 && y === 0) || (x === goalX / L && y === goalY / L)
                     ? new Vertex(x, y).draw()
                     : new Vertex(x, y, Math.random() < 0.4).draw();
         }
