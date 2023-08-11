@@ -1,6 +1,7 @@
 const LENGTH = 500
-const N = 5
+const N = 20
 const L = LENGTH / N
+const W = 1
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d");
 const vertices = []
@@ -9,6 +10,22 @@ canvas.height = LENGTH
 canvas.width = LENGTH
 ctx.fillStyle = "#d3d3d3";
 ctx.fillRect(0, 0, LENGTH, LENGTH);
+
+function init() {
+    for (let y = 0; y < N; y++) {
+        vertices.push([]);
+        for (let x = 0; x < N; x++) {
+            vertices[y][x] =
+                (x === 0 && y === 0) || (x === N - 1 && y === N - 1)
+                    ? new Vertex(x, y).draw()
+                    : new Vertex(x, y, Math.random() < 0.2).draw();
+        }
+    }
+    for (let y = 0; y < N; y++)
+        for (let x = 0; x < N; x++)
+            vertices[y][x].calculateEdgeAndHeuristic()
+
+}
 
 function getEdges(point) {
     const edges = []
@@ -40,10 +57,6 @@ function getEdges(point) {
     } // L
 
     return edges;
-}
-
-function ifDisabled(x, y) {
-    vertices[x / L][y / L].disabled
 }
 
 // From ChatGPT
@@ -103,4 +116,56 @@ function manhattanDistanceWithObstaclesHeuristic(src) {
     // }
     return h;
     // return diagonalMoves * 10 + straightMoves * 14;
+}
+
+function findDijkstra() {
+    const distances = [];
+    const current = new PriorityQueue();
+    const visited = [];
+
+    for (let i = 0; i < N; i++) {
+        distances.push([]);
+        for (let j = 0; j < N; j++)
+            distances[i][j] = new Distance(vertices[i][j], Number.MAX_VALUE)
+    }
+    distances[0][0].distance = 0
+    current.push(distances[0][0]);
+
+    find(distances, current, visited);
+    console.log(distances);
+    return distances;
+}
+
+function find(distances, current, visited) {
+    const currentVertex = current.top();
+    current.pop();
+    console.log(currentVertex.vertex.point.y, currentVertex.vertex.point.x);
+    if (currentVertex.vertex.point.y === LENGTH - L && currentVertex.vertex.point.x === LENGTH - L)
+        return;
+
+
+    for (const edge of currentVertex.vertex.edges) {
+        const v = vertices[edge.y / L][edge.x / L]
+        if (!visited.find(vertex => v === vertex)) {
+            if (distances[v.point.y / L][v.point.x / L].distance > (W + currentVertex.distance)) {
+                distances[v.point.y / L][v.point.x / L].distance = W + currentVertex.distance;
+                distances[v.point.y / L][v.point.x / L].prev = currentVertex;
+                current.push(distances[v.point.y / L][v.point.x / L]);
+            }
+        }
+    }
+
+    visited.push(currentVertex.vertex);
+
+    if (!current.empty()) find(distances, current, visited);
+}
+
+function drawPath(distances) {
+    let v = distances[(LENGTH - L) / L][(LENGTH - L) / L]
+    while (v !== null) {
+        const vertex = v.vertex
+        ctx.fillStyle = "green";
+        ctx.fillRect(vertex.point.x, vertex.point.y, vertex.length, vertex.length);
+        v = v.prev
+    }
 }
