@@ -20,11 +20,13 @@ class Vertex {
         return this
     }
 
-    calculateEdgeAndHeuristic() {
+    calculateEdge() {
         if (!this.disabled)
             this.edges = getEdges(this.point)
+    }
 
-        this.h = manhattanDistanceWithObstaclesHeuristic(this)
+    calculateHeuristic() {
+        this.h = manhattanDistanceHeuristic(this)
     }
 }
 

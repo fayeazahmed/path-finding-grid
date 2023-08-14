@@ -9,12 +9,35 @@
 			integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
 			crossorigin="anonymous"
 		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<style>
+			button:focus {
+				box-shadow: none !important;
+			}
+		</style>
 		<script src="global.js" defer></script>
+		<script src="functions.js" defer></script>
 		<script src="classes.js" defer></script>
 		<script src="index.js" defer></script>
 		<title>Graph</title>
 	</head>
 	<body class="d-flex justify-content-center mt-5">
 		<canvas id="canvas"></canvas>
+		<div class="d-flex flex-column ms-3">
+			<button
+				style="color: red"
+				class="align-self-start btn btn-dark"
+				id="stopBtn"
+				disabled
+			>
+				<i class="fa fa-play" aria-hidden="true"></i>
+			</button>
+			<p id="hints" style="font-family: cursive; min-width: 226px">
+				Select source and destination.
+			</p>
+		</div>
 	</body>
 </html>

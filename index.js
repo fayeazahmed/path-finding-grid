@@ -1,2 +1,3 @@
 init();
-findDijkstra().then(distances => drawPath(distances))
+canvas.addEventListener("click", select);
+BTN.addEventListener("click", start)
