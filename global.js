@@ -5,6 +5,7 @@ const W = 1
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d");
 const BTN = document.getElementById("stopBtn")
+const SLIDER = document.getElementById("disabledCount")
 const HINTS = document.getElementById("hints")
 const vertices = []
 canvas.height = LENGTH
@@ -14,6 +15,8 @@ ctx.fillRect(0, 0, LENGTH, LENGTH);
 let SRC
 let GOAL
 let RUNNING = false
+let DISABLE_COUNT = 0.3
+let FOUND = false
 const PLAY_ICON = "<i class='fa fa-play' aria-hidden='true'></i>"
 const STOP_ICON = "<i class='fa fa-refresh' aria-hidden='true'></i>"
 const SRC_DST_MESSAGE = "Select source and destination."
@@ -21,3 +24,4 @@ const DST_MESSAGE = "Select destination."
 const SRC_MESSAGE = "Select source."
 const PLAY_MESSAGE = "Select play."
 const DONE_MESSAGE = "Done, Boi."
+const FAILED_MESSAGE = "No can do."

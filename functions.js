@@ -2,13 +2,18 @@ function init() {
     for (let y = 0; y < N; y++) {
         vertices.push([]);
         for (let x = 0; x < N; x++) {
-            vertices[y][x] = new Vertex(x, y, Math.random() < 0.3).draw()
+            vertices[y][x] = new Vertex(x, y, Math.random() < DISABLE_COUNT).draw()
         }
     }
     for (let y = 0; y < N; y++)
         for (let x = 0; x < N; x++)
             vertices[y][x].calculateEdge()
 
+}
+
+function slider(e) {
+    DISABLE_COUNT = SLIDER.value
+    refresh()
 }
 
 function select(e) {
@@ -74,15 +79,19 @@ function start(e) {
             HINTS.textContent = ""
             findDijkstra().then(distances => drawPath(distances))
         } else {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            init()
-            SRC = GOAL = null
-            RUNNING = false
-            BTN.innerHTML = PLAY_ICON
-            BTN.disabled = true
-            HINTS.textContent = SRC_DST_MESSAGE
+            refresh()
         }
     }
+}
+
+function refresh() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    init()
+    SRC = GOAL = null
+    RUNNING = false
+    BTN.innerHTML = PLAY_ICON
+    BTN.disabled = true
+    HINTS.textContent = SRC_DST_MESSAGE
 }
 
 function getEdges(point) {
@@ -214,6 +223,10 @@ function drawPath(distances) {
     let i = 0
     let path = []
     let v = distances[GOAL.point.y / L][GOAL.point.x / L]
+    if (!v.prev) {
+        HINTS.textContent = FAILED_MESSAGE
+        return
+    }
     while (v !== null) {
         path.push(v.vertex)
         v = v.prev
